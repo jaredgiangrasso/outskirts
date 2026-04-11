@@ -87,18 +87,20 @@ These metrics apply to both lean-tos and primitive campsites.
 
 | Metric | Description | Computation Method |
 |---|---|---|
-| Distance to nearest trailhead | Trail-distance approach hike from nearest trailhead | Routing API (returns distance + trail geometry) |
-| Distance to nearest water | Straight-line distance to closest water feature | Turf.js nearest point/line |
+| Distance to nearest parking | Trail-routed distance from nearest DEC public parking lot | Mapbox Directions API (returns distance + route geometry) |
+| Distance to nearest water | Straight-line distance to closest water feature | Turf.js nearest point |
 | Distance to nearest neighbor | Straight-line distance to nearest other shelter (any type) | Turf.js nearest point |
 
 **Why these computation methods:**
-- Trailhead distance uses trail routing because this is the metric where straight-line is most misleading to a backpacker. The routing API also returns the actual trail geometry for map display.
+- Parking distance uses trail routing because this is the metric where straight-line is most misleading to a backpacker. The Mapbox Directions API also returns the actual route geometry for map display.
 - Water and neighbor distances use straight-line because trail routing doesn't meaningfully apply (you bushwhack to water; neighbor distance is an isolation signal, not a hiking route).
 
-**Nearest trailhead computation strategy:**
-1. Use flatbush R-tree spatial index to find the N nearest trailhead candidates by straight-line distance
-2. Route only to those candidates via the routing API
+**Nearest parking computation strategy:**
+1. Use flatbush R-tree spatial index to find the N nearest parking lot candidates by straight-line distance
+2. Route only to those candidates via the Mapbox Directions API
 3. Store the shortest trail distance and its GeoJSON LineString geometry
+
+**Routing API:** Mapbox Directions. Profile: `mapbox/walking`. Token read from `MAPBOX_TOKEN` environment variable.
 
 ## Setup
 
@@ -214,13 +216,7 @@ This is the central UX feature. The same precomputed data that powers filtering 
 
 ## Open Questions
 
-- **Primitive campsite count:** Query OSM and DECinfo Locator during milestone 1 to determine exact count and confirm total routing API calls stay within free tier limits.
-- **Routing API selection:** Mapbox Directions vs. GraphHopper — decide based on free tier limits once campsite count is known.
-- **Water source classification:** Inspect the reference layer during milestone 1 to determine if water sources need a type field or can be treated uniformly.
-- **Lean-to attribute fields:** Catalog the actual fields returned by the DECinfo Locator lean-to layer during milestone 1 and update the schema accordingly.
-- **Output JSON schema:** Defer until milestone 1 when the data model is concrete. Single file assumed.
-- **Adirondack Park boundary:** Confirm the Blue Line polygon is available in `dil_reference` and usable for spatial filtering.
-- **Campsite data source:** Determine whether OSM alone is sufficient for primitive campsites or if DECinfo Locator provides better coverage.
+- **Output JSON schema:** Defer until spatial computation is complete when the data model is concrete. Single file assumed.
 
 ## Explicitly Not Doing (v1)
 
@@ -240,3 +236,5 @@ This is the central UX feature. The same precomputed data that powers filtering 
 - Additional feature types (fire towers, lean-to condition ratings)
 - Along-trail distance between shelters (not just to trailhead)
 - GeoPackage or PostGIS for persistence if data volume grows
+- **Improved parking routing:** v1 routes only to the single nearest parking lot (by straight-line) due to ORS free tier limits (~2,000 calls/day vs ~8,000 needed for k=5). A future improvement would route to the k=5 nearest candidates and select the shortest routed distance, catching cases where the nearest lot is a boat launch but a slightly farther lot has trail access. Could also be solved by self-hosting GraphHopper (no call limits) or upgrading ORS tier.
+- **Parking lot type differentiation:** DEC parking data has no structured type field. v1 treats all public lots as valid routing targets. A future improvement would classify lots (hiking trailhead vs boat launch vs fishing access) using NAME keyword parsing, enabling users to filter by trip type (foot vs paddle).

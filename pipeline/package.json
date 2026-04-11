@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "start": "tsx src/index.ts",
-    "test": "tsx --test src/normalize/transforms.test.ts"
+    "test": "tsx --test src/normalize/transforms.test.ts src/spatial/compute.test.ts"
   },
   "keywords": [],
   "author": "",

@@ -2,3 +2,6 @@ node_modules/
 dist/
 cache/
 normalized/
+enriched/
+scripts/compare-routing-output.geojson
+.env

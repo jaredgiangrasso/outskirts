@@ -24,7 +24,7 @@ specs/           # Project spec and per-phase spec documents
 
 - No backend server. The pipeline outputs a static JSON file that the frontend loads directly.
 - All filtering and sorting is client-side. The dataset is small (~200 lean-tos for Adirondacks).
-- All spatial distances are Euclidean (straight-line) for v1. No along-trail routing.
+- Parking distance uses the Mapbox Directions API (trail-routed). Water and neighbor distances are straight-line (Turf.js).
 - The pipeline runs manually on the developer's machine. No scheduling or real-time updates.
 
 ## Rules

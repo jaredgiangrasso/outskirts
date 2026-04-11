@@ -15,7 +15,7 @@
 | 2. Cataloguing | Completed |
 | 3. Normalization | Completed |
 | 4. Spatial Computation | In Progress |
-| 5. Output | Not Started |
+| 5. Output | In Progress |
 
 ## Milestones
 
