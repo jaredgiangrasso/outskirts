@@ -76,10 +76,9 @@ The app has two shelter types, treated as separate entities sharing a common met
 | Data | Source |
 |---|---|
 | Lean-to locations | DECinfo Locator `dil_land_assets_lean_to` |
-| Primitive campsites | OSM Overpass API (confirm against DECinfo Locator) |
-| Trailheads | OSM Overpass API (`highway=trailhead`) |
-| Trail geometries | OSM Overpass API (`highway=path\|track\|footway`) |
-| Water features | DECinfo Locator `dil_reference` |
+| Primitive campsites | DECinfo Locator `dec_backcountry_features/MapServer/0` (ASSET in PRIMITIVE CAMPSITE, PRIMATIVE CAMPSITE, PRIMITIVE TENT SITE) |
+| Parking (routing start points) | DECinfo Locator `dec_backcountry_features/MapServer/0` (ASSET in UNPAVED/PAVED PARKING LOT, PUBLICUSE=Y) |
+| Water features | DECinfo Locator GNIS (`gnis/MapServer/0`), filtered to NY water types |
 | Park boundary | DECinfo Locator `dil_reference` (Blue Line polygon) |
 
 ## Spatial Metrics (Computed Per Shelter)
