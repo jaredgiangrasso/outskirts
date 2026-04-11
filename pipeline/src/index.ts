@@ -2,6 +2,7 @@ import { runIngestion } from './ingest/index.js';
 import { runCataloguing } from './catalogue/index.js';
 import { runNormalization } from './normalize/index.js';
 import { runSpatialComputation } from './spatial/index.js';
+import { runOutput } from './output/index.js';
 
 async function main() {
   console.log('=== ADK Shelter Explorer Pipeline ===\n');
@@ -13,6 +14,8 @@ async function main() {
   await runNormalization();
   console.log('\n[stage] Spatial Computation');
   await runSpatialComputation();
+  console.log('\n[stage] Output');
+  await runOutput();
   console.log('\nDone.');
 }
 
