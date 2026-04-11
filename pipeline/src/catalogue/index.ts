@@ -110,12 +110,6 @@ function renderLayer(
 |---|---|---|---|
 ${fieldRows}
 
-### Anomalies
-_To be filled in manually after reviewing the data above._
-
-### Open Questions Resolved
-_To be filled in manually._
-
 ---
 `;
 }

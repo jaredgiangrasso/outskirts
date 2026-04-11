@@ -13,8 +13,8 @@
 |---|---|
 | 1. Ingestion | Completed |
 | 2. Cataloguing | Completed |
-| 3. Normalization | In Progress |
-| 4. Spatial Computation | Not Started |
+| 3. Normalization | Completed |
+| 4. Spatial Computation | In Progress |
 | 5. Output | Not Started |
 
 ## Milestones
