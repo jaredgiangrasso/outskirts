@@ -4,7 +4,7 @@
 
 An interactive web app that displays scored, filterable lean-to shelters in the Adirondack Park. A TypeScript CLI pipeline ingests public GIS data from NYS DECinfo Locator ArcGIS endpoints, computes spatial metrics, and outputs a static JSON file consumed by a React frontend. There is no backend server.
 
-See `PROJECT_SPEC.md` for full requirements, architecture, data sources, and milestones.
+See `specs/PROJECT_SPEC.md` for full requirements, architecture, data sources, and milestones.
 
 ## Tech Stack
 
@@ -17,7 +17,7 @@ See `PROJECT_SPEC.md` for full requirements, architecture, data sources, and mil
 ```
 pipeline/        # CLI tool — ingestion, normalization, spatial computation
 frontend/        # React app — map, list, filtering, spatial visualization
-PROJECT_SPEC.md  # Detailed requirements and open questions
+specs/           # Project spec and per-phase spec documents
 ```
 
 ## Key Architectural Decisions
@@ -29,9 +29,9 @@ PROJECT_SPEC.md  # Detailed requirements and open questions
 
 ## Rules
 
-- When requirements, scope, or architectural decisions change during a session, update `PROJECT_SPEC.md` to reflect the change.
-- Each phase in any section of `PROJECT_SPEC.md` must have its own dedicated spec file (e.g. `INGESTION_SPEC.md`, `CATALOGUING_SPEC.md`, `MILESTONE_1_SPEC.md`). Create the spec file for a phase before writing any code for that phase.
-- Track all phase statuses in `STATUS.md`. When a phase is added or removed from `PROJECT_SPEC.md`, update `STATUS.md` to match. When work begins on a phase, mark it as `In Progress`. When a phase is complete, mark it as `Completed`.
+- When requirements, scope, or architectural decisions change during a session, update `specs/PROJECT_SPEC.md` to reflect the change.
+- Each phase in any section of `specs/PROJECT_SPEC.md` must have its own dedicated spec file in `specs/` (e.g. `specs/INGESTION_SPEC.md`, `specs/CATALOGUING_SPEC.md`). Create the spec file for a phase before writing any code for that phase.
+- Track all phase statuses in `specs/STATUS.md`. When a phase is added or removed from `specs/PROJECT_SPEC.md`, update `specs/STATUS.md` to match. When work begins on a phase, mark it as `In Progress`. When a phase is complete, mark it as `Completed`.
 - Do not introduce backend servers, databases, or API layers unless explicitly discussed and agreed upon.
 - Keep the pipeline and frontend as independent projects with the JSON file as the only contract between them.
 - Use TypeScript strict mode throughout.
