@@ -42,3 +42,7 @@ specs/           # Project spec and per-phase spec documents
 ### Pipeline (`pipeline/`)
 - `npm run build` — compile TypeScript to `dist/`
 - `npm start` — run the pipeline via `tsx src/index.ts`
+
+### Frontend (`frontend/`)
+- `npm run dev` — start Vite dev server
+- `npm run build` — compile and bundle for production
