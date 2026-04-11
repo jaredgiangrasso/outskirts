@@ -21,7 +21,8 @@
 
 | Milestone | Status |
 |---|---|
-| 1. Pipeline Foundation | Not Started |
-| 2. Spatial Computation | Not Started |
-| 3. Functional Frontend | Not Started |
-| 4. Spatial Visualization and Polish | Not Started |
+| 1. Pipeline Foundation | In Progress |
+| 2. Spatial Computation | In Progress |
+| 3. Map View | Completed |
+| 4. Spatial Visualization on Click | Not Started |
+| 5. List Panel | Not Started |

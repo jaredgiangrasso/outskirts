@@ -201,15 +201,21 @@ This is the central UX feature. The same precomputed data that powers filtering 
 - Validate results — spot-check distances in QGIS, sanity-check extremes
 - **Done when:** Every shelter has all three metrics and the values are plausible
 
-### Milestone 3: Functional Frontend
-- Render lean-tos and campsites on the Mapbox map with distinct markers
-- Build the list panel with filtering (including type filter) and sorting
-- Synchronize map and list interactions
-- Basic click behavior showing shelter details
+### Milestone 3: Map View
+- Load `shelters.json` and render lean-tos and campsites as distinct point markers on the Mapbox map
+- Basic click behavior showing shelter name and type
+- **Done when:** All shelters are visible on the map and clickable
+
+### Milestone 4: List Panel
+- Sidebar list of shelters alongside the map
+- Filter by shelter type (lean-to, campsite, or both)
+- Filter by spatial metrics (e.g. "within X km of water")
+- Sort by any spatial metric
+- Map and list are synchronized — selecting in one updates the other
 - **Done when:** The app is usable — you can filter, sort, and inspect shelters
 
-### Milestone 4: Spatial Visualization and Polish
-- Implement on-click spatial visualization (trail route, water line, neighbor lines)
+### Milestone 5: Spatial Visualization on Click
+- On-click visualization: routed trail to nearest parking, straight line to nearest water, dashed lines to nearest neighbor
 - Design pass — color system, typography, animations, responsive layout
 - Loading states, empty states, error handling
 - **Done when:** The app is complete and polished
