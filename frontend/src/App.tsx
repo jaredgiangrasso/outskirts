@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Map from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapView from './components/MapView';
+import DetailPanel from './components/DetailPanel';
 import type { SheltersData, ShelterFeature } from './types';
 
 const ADIRONDACKS_CENTER = { longitude: -74.2, latitude: 44.1 };
@@ -65,6 +66,11 @@ export default function App() {
           onSelectShelter={setSelectedShelter}
         />
       </Map>
+      <DetailPanel
+        shelter={selectedShelter}
+        data={data}
+        onClose={() => setSelectedShelter(null)}
+      />
     </div>
   );
 }

@@ -24,5 +24,11 @@
 | 1. Pipeline Foundation | In Progress |
 | 2. Spatial Computation | In Progress |
 | 3. Map View | Completed |
-| 4. Spatial Visualization on Click | Not Started |
+| 4. Spatial Visualization on Click | In Progress |
 | 5. List Panel | Not Started |
+
+## Known Issues / Planned Work
+
+| Issue | Area | Status |
+|---|---|---|
+| Water distance uses GNIS point coordinates — inaccurate for extended features (streams, rivers). Switch to OSM water geometry and compute nearest point on LineString/Polygon. Affects spatial computation and visualization. | Pipeline + Frontend | Not Started |

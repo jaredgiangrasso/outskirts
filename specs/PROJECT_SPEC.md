@@ -206,19 +206,19 @@ This is the central UX feature. The same precomputed data that powers filtering 
 - Basic click behavior showing shelter name and type
 - **Done when:** All shelters are visible on the map and clickable
 
-### Milestone 4: List Panel
+### Milestone 4: Spatial Visualization on Click
+- On-click visualization: routed trail to nearest parking, straight line to nearest water, dashed lines to nearest neighbor
+- Design pass — color system, typography, animations, responsive layout
+- Loading states, empty states, error handling
+- **Done when:** The app is complete and polished
+
+### Milestone 5: List Panel
 - Sidebar list of shelters alongside the map
 - Filter by shelter type (lean-to, campsite, or both)
 - Filter by spatial metrics (e.g. "within X km of water")
 - Sort by any spatial metric
 - Map and list are synchronized — selecting in one updates the other
 - **Done when:** The app is usable — you can filter, sort, and inspect shelters
-
-### Milestone 5: Spatial Visualization on Click
-- On-click visualization: routed trail to nearest parking, straight line to nearest water, dashed lines to nearest neighbor
-- Design pass — color system, typography, animations, responsive layout
-- Loading states, empty states, error handling
-- **Done when:** The app is complete and polished
 
 ## Open Questions
 
@@ -244,3 +244,9 @@ This is the central UX feature. The same precomputed data that powers filtering 
 - GeoPackage or PostGIS for persistence if data volume grows
 - **Improved parking routing:** v1 routes only to the single nearest parking lot (by straight-line) due to ORS free tier limits (~2,000 calls/day vs ~8,000 needed for k=5). A future improvement would route to the k=5 nearest candidates and select the shortest routed distance, catching cases where the nearest lot is a boat launch but a slightly farther lot has trail access. Could also be solved by self-hosting GraphHopper (no call limits) or upgrading ORS tier.
 - **Parking lot type differentiation:** DEC parking data has no structured type field. v1 treats all public lots as valid routing targets. A future improvement would classify lots (hiking trailhead vs boat launch vs fishing access) using NAME keyword parsing, enabling users to filter by trip type (foot vs paddle).
+
+### Frontend / Visualization Enhancements
+
+- **3D terrain map:** Enable Mapbox's DEM terrain source with camera pitch and atmospheric fog. The ADK's topography is the context for every shelter metric — showing it in 3D is the right default. Implementation involves tuning terrain exaggeration, fog density, and camera behavior on shelter select to feel deliberate rather than disorienting. Pairs naturally with a custom Mapbox Studio style that emphasizes wilderness and trail layers over road infrastructure.
+- **Animated route drawing:** When a shelter is selected, the route line draws itself outward from the trailhead to the shelter rather than appearing instantly. Uses Mapbox `line-dasharray` animation. Combined with a smooth camera fly-to on selection, this makes the core click interaction feel like a product rather than a data display.
+- **Elevation profiles:** Show the elevation profile of the hiking route as a chart in the detail panel — total gain, loss, and a line graph of elevation vs. distance. Requires sampling elevation values along each route geometry using Mapbox Terrain RGB tiles (elevation encoded in pixel color values). Best done at pipeline time: sample and store elevation points per route in `shelters.json` so the client just renders a pre-computed series. This is the most substantive of the three — it adds a feature a backpacker would genuinely use, and it extends the pipeline with non-trivial spatial work.
