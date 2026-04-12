@@ -1,65 +1,56 @@
-import { useState, useEffect } from 'react';
-import Map from 'react-map-gl/mapbox';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import MapView from './components/MapView';
-import DetailPanel from './components/DetailPanel';
-import type { SheltersData, ShelterFeature } from './types';
+import { useState, useEffect } from "react";
+import Map, { Source, Layer, useMap, MapProvider } from "react-map-gl/mapbox";
+import "mapbox-gl/dist/mapbox-gl.css";
+import MapView from "./components/MapView";
+import DetailPanel from "./components/DetailPanel";
+import type { SheltersData, ShelterFeature } from "./types";
 
 const ADIRONDACKS_CENTER = { longitude: -74.2, latitude: 44.1 };
+const INITIAL_VIEW_STATE = {
+  ...ADIRONDACKS_CENTER,
+  zoom: 8,
+  pitch: 45,
+  bearing: 0,
+};
 
-export default function App() {
-  const [data, setData] = useState<SheltersData | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [selectedShelter, setSelectedShelter] = useState<ShelterFeature | null>(null);
+function MapScene({ data }: { data: SheltersData }) {
+  const { main: map } = useMap();
+  const [selectedShelter, setSelectedShelter] = useState<ShelterFeature | null>(
+    null,
+  );
 
-  useEffect(() => {
-    fetch('/shelters.json')
-      .then((res) => {
-        if (!res.ok) throw new Error(`Failed to load shelters.json: ${res.status}`);
-        return res.json() as Promise<SheltersData>;
-      })
-      .then(setData)
-      .catch((err: unknown) => {
-        setError(err instanceof Error ? err.message : 'Unknown error loading data');
-      });
-  }, []);
-
-  if (error) {
-    return (
-      <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        width: '100vw', height: '100vh',
-        fontFamily: 'system-ui, sans-serif', color: '#c0392b',
-      }}>
-        <div>
-          <div style={{ fontSize: '18px', fontWeight: 600, marginBottom: '8px' }}>Failed to load shelter data</div>
-          <div style={{ fontSize: '14px', color: '#666' }}>{error}</div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!data) {
-    return (
-      <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        width: '100vw', height: '100vh',
-        fontFamily: 'system-ui, sans-serif', color: '#555',
-      }}>
-        Loading shelters…
-      </div>
-    );
-  }
+  const handleDeselectShelter = () => {
+    setSelectedShelter(null);
+    map?.flyTo(INITIAL_VIEW_STATE);
+  };
 
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div style={{ width: "100vw", height: "100vh" }}>
       <Map
-        initialViewState={{ ...ADIRONDACKS_CENTER, zoom: 8 }}
-        style={{ width: '100%', height: '100%' }}
+        id="main"
+        initialViewState={INITIAL_VIEW_STATE}
+        style={{ width: "100%", height: "100%" }}
         mapStyle="mapbox://styles/mapbox/outdoors-v12"
         mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
-        onClick={() => setSelectedShelter(null)}
+        terrain={{ source: "mapbox-dem", exaggeration: 1.5 }}
+        onClick={handleDeselectShelter}
       >
+        <Source
+          id="mapbox-dem"
+          type="raster-dem"
+          url="mapbox://mapbox.mapbox-terrain-dem-v1"
+          tileSize={512}
+          maxzoom={14}
+        />
+        <Layer
+          id="sky"
+          type="sky"
+          paint={{
+            "sky-type": "atmosphere",
+            "sky-atmosphere-sun": [0.0, 90.0],
+            "sky-atmosphere-sun-intensity": 15,
+          }}
+        />
         <MapView
           data={data}
           selectedShelter={selectedShelter}
@@ -69,8 +60,78 @@ export default function App() {
       <DetailPanel
         shelter={selectedShelter}
         data={data}
-        onClose={() => setSelectedShelter(null)}
+        onClose={handleDeselectShelter}
       />
     </div>
   );
 }
+
+export default function App() {
+  const [data, setData] = useState<SheltersData | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/shelters.json")
+      .then((res) => {
+        if (!res.ok)
+          throw new Error(`Failed to load shelters.json: ${res.status}`);
+        return res.json() as Promise<SheltersData>;
+      })
+      .then(setData)
+      .catch((err: unknown) => {
+        setError(
+          err instanceof Error ? err.message : "Unknown error loading data",
+        );
+      });
+  }, []);
+
+  if (error) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100vw",
+          height: "100vh",
+          fontFamily: "system-ui, sans-serif",
+          color: "#c0392b",
+        }}
+      >
+        <div>
+          <div
+            style={{ fontSize: "18px", fontWeight: 600, marginBottom: "8px" }}
+          >
+            Failed to load shelter data
+          </div>
+          <div style={{ fontSize: "14px", color: "#666" }}>{error}</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100vw",
+          height: "100vh",
+          fontFamily: "system-ui, sans-serif",
+          color: "#555",
+        }}
+      >
+        Loading shelters…
+      </div>
+    );
+  }
+
+  return (
+    <MapProvider>
+      <MapScene data={data} />
+    </MapProvider>
+  );
+}
+
