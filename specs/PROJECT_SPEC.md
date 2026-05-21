@@ -8,13 +8,6 @@ A scored, filterable, interactive map of every lean-to and primitive campsite in
 
 Build a data pipeline that ingests public geospatial data from OSM and NYS DECinfo Locator, computes meaningful spatial relationships for backcountry shelters, and serves the result through a polished web application aimed at backpackers.
 
-The emphasis is on:
-
-- Working with real, messy government and community GIS data
-- Designing a coherent ingestion, normalization, and routing pipeline
-- Computing non-trivial spatial relationships between features
-- Presenting spatial data through thoughtful, interactive visualization
-
 ## Architecture
 
 The system has two independent pieces with a JSON file as the boundary between them.
